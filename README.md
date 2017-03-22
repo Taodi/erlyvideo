@@ -6,12 +6,12 @@ This was originally an open source project but it went closed source and can be 
 ## Fixing the Bit Rot
 I forked this from another repository (see above) that was one of a number of forked remnants of the original Erlyvideo. Probably a number of people forked this before it was closed up and eventually become the precursor of Flussonic. 
 
-The _bit rot_ was in a number of areas:
-1. The code used parameterized modules that were no longer supported in erlang (version 19). This was fixed by using a work around designed to deal with this. It is called [pmod_transform](https://github.com/erlang/pmod_transform). See their examples on how to use it. I had to also change its Makefile and the rebar.config to get things to compile.
-2. `erlang:now/0` is depreciated and there are a number of replacements for it. I generally used the function `erlang:timestamp/0` since that returned a tuple compatible with the one returned by `erlang:now/0`. See the erlang documentation. It could be that some of code should have been rewritten to use a different function. 
-3. There were depreciated functions from `crypto`. The highlighting in emacs usually gave good clues on what to replace it with.
-4. Some of the nif's did not compile probably due to changes in rebar. It thought that all of the c-code in should go into one library and since there were two or more object files with a init files with the exact same name in them, this did not work. Fixed by changing the rebar.config file. 
-5. In `elixer_tracker.erl` module the code assumed that `Module.info_available(compile)` returned an association with the atom time as a key. This no longer the case in the version of erlang I am using (v 19). This module needs some major rewriting since but I fixed it by simply putting some guard code around the offending pattern matching. This is a hack since this module basically no longer works. I believe it was used to detect when new code was added and automatically recompile and load it. 
+The *bit rot* was in a number of areas:
+1. The code used parameterized modules that were no longer supported in Erlang (version 19). This was fixed by using a work around designed to deal with this. It is called [pmod_transform](https://github.com/erlang/pmod_transform). See their examples on how to use it. I had to also change its `Makefile` and the `rebar.config` to get things to compile.
+2. `erlang:now/0` is depreciated and there are a number of replacements for it. I generally used the function `erlang:timestamp/0` since that returned a tuple compatible with the one returned by `erlang:now/0`. See the Erlang documentation. It could be that some of code should have been rewritten to use a different function. 
+3. There were depreciated functions from `crypto`. The highlighting in Emacs usually gave good clues on what to replace it with.
+4. Some of the nif's did not compile probably due to changes in `rebar`. It thought that all of the `c_src` in should go into one library and since there were two or more object files with a `nif_init` function in them, this did not work. Fixed by changing the `rebar.config` file. 
+5. In `elixer_tracker.erl` module the code assumed that `Module.info_available(compile)` returned an association with the atom `time` as a key. This no longer the case in the version of Erlang I am using (v 19). This module needs some major rewriting since but I fixed it by simply putting some guard code around the offending pattern matching. This is a hack since this module basically no longer works. I believe it was used to detect when new code was added. It then automatically recompiled and loaded it. 
 6. Numerous include files pointing at the wrong directory were fixed. 
 
 ## Compiling and Running
